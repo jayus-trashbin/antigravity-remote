@@ -33,7 +33,7 @@ app.use('/api/git', createGitRouter());
 app.use('/api/improve', createImproveRouter());
 
 // Static Files (Production)
-const clientDist = path.join(__dirname, '../dist');
+const clientDist = path.join(__dirname, '../../client/dist');
 app.use(express.static(clientDist));
 app.get('*', (_req, res, next) => {
   if (_req.path.startsWith('/api')) return next();

@@ -17,6 +17,8 @@ interface AppConfig {
   telegramBotToken: string;
   telegramChatId: string;
   tunnelEnabled: boolean;
+  ollamaUrl: string;
+  ollamaModel: string;
 }
 
 function loadConfig(): AppConfig {
@@ -30,6 +32,8 @@ function loadConfig(): AppConfig {
     telegramBotToken: process.env.TELEGRAM_BOT_TOKEN || '',
     telegramChatId: process.env.TELEGRAM_CHAT_ID || '',
     tunnelEnabled: false,
+    ollamaUrl: process.env.OLLAMA_URL || 'http://localhost:11434',
+    ollamaModel: process.env.OLLAMA_MODEL || 'deepseek-coder',
   };
 
   if (!existsSync(DATA_FILE)) return defaults;
@@ -54,4 +58,3 @@ export async function saveConfig(partial: Partial<AppConfig>) {
 }
 
 export const config = loadConfig();
-export const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY || '';
