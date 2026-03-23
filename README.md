@@ -111,8 +111,10 @@ bash test.sh           # Validação completa
 ## 📚 Documentação
 
 - **[QUICKSTART.md](QUICKSTART.md)** - Guia rápido de inicialização
+- **[OLLAMA_SETUP.md](OLLAMA_SETUP.md)** - Configurar Ollama + DeepSeek Coder
+- **[DOCKER_DEPLOYMENT.md](DOCKER_DEPLOYMENT.md)** - Deploy com Docker + Docker Compose
+- **[CI_CD_PIPELINE.md](CI_CD_PIPELINE.md)** - GitHub Actions CI/CD automation
 - **[API_DOCUMENTATION.md](API_DOCUMENTATION.md)** - Endpoints API completos
-- **[TESTING_PHASE_3.md](TESTING_PHASE_3.md)** - Relatório de testes runtime
 - **[BUILD_REPORT.md](BUILD_REPORT.md)** - Relatório de build com fixes
 - **[VALIDATION_REPORT.md](VALIDATION_REPORT.md)** - Validação pré-build
 
@@ -126,8 +128,11 @@ CDP_PORT=9222          # Antigravity remote debugging port
 # Autenticação
 AUTH_PIN=1234          # PIN de login (MUDE ESTE!)
 
+# Ollama (prompt improvement)
+OLLAMA_URL=http://localhost:11434
+OLLAMA_MODEL=deepseek-coder
+
 # APIs (opcional)
-ANTHROPIC_API_KEY=     # Para prompt improvement com Claude
 TELEGRAM_BOT_TOKEN=    # Para notificações via Telegram
 TELEGRAM_CHAT_ID=      # Chat ID para Telegram
 ```
@@ -224,6 +229,31 @@ bash test.sh
 # ... e mais
 ```
 
+## 🐳 Docker Deployment
+
+Deploy em uma linha:
+
+```bash
+docker-compose up -d
+```
+
+Isso inicia:
+- Ollama com DeepSeek Coder
+- Antigravity Remote server
+- Todos rodando e prontos
+
+Mais detalhes: **[DOCKER_DEPLOYMENT.md](DOCKER_DEPLOYMENT.md)**
+
+## 🔄 CI/CD (GitHub Actions)
+
+Push automático de:
+- Validação TypeScript
+- Build de server + client
+- Docker image build
+- Tests em docker-compose
+
+Documentação: **[CI_CD_PIPELINE.md](CI_CD_PIPELINE.md)**
+
 ## 🐛 Troubleshooting
 
 ### "npm: command not found"
@@ -239,6 +269,12 @@ Inicie com: `antigravity --remote-debugging-port=9222`
 
 ### "HTTPS certificate warning"
 Normal para self-signed cert. Clique "Proceder com risco".
+
+### "Ollama connection refused"
+Aguarde 1-2 minutos para Ollama inicializar ou execute:
+```bash
+ollama serve
+```
 
 Veja **[QUICKSTART.md](QUICKSTART.md)** para mais troubleshooting.
 
