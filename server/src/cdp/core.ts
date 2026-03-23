@@ -14,9 +14,9 @@ let reconnectTimer: NodeJS.Timeout | null = null;
 
 export async function connectCDP(): Promise<void> {
   try {
-    const list = await CDP.List({ port: config.cdpPort });
+    const list = await CDP.List({ port: config.cdpPort }) as any[];
     const antigravityTargets = list.filter(
-      (t) => t.url?.includes('antigravity') || t.title?.includes('Antigravity')
+      (t: any) => t.url?.includes('antigravity') || t.title?.includes('Antigravity')
     );
 
     if (antigravityTargets.length === 0) {
@@ -26,7 +26,7 @@ export async function connectCDP(): Promise<void> {
     }
 
     targets = await Promise.all(
-      antigravityTargets.map(async (t) => {
+      antigravityTargets.map(async (t: any) => {
         try {
           const client = await CDP({ port: config.cdpPort, target: t.id });
           await client.Runtime.enable();

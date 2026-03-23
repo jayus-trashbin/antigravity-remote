@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { requireAuth } from '../middleware/auth.js';
-import { improvePrompt } from '../services/improve.ts';
+import { improvePrompt } from '../services/improve.js';
 
 export function createImproveRouter(): Router {
   const router = Router();

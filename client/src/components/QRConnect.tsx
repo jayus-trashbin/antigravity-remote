@@ -6,8 +6,8 @@ export function QRConnect() {
   const url = window.location.origin;
 
   useEffect(() => {
-    QRCode.toDataURL(url, { margin: 2, scale: 8 }, (err, url) => {
-      if (!err) setQr(url);
+    QRCode.toDataURL(url, { margin: 2, scale: 8 }, (err: Error | null, qrUrl?: string) => {
+      if (!err && qrUrl) setQr(qrUrl);
     });
   }, []);
 

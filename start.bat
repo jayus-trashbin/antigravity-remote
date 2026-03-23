@@ -1,5 +1,6 @@
 @echo off
-set NODE_DIR=c:\Users\kawe.pinto\Documents\Projetos\plex-voice\node-v20.11.0-win-x64
+REM Usar Node.js portátil local
+set NODE_DIR=%~dp0node
 set PATH=%NODE_DIR%;%~dp0node_modules\.bin;%PATH%
 set NODE_EXE=%NODE_DIR%\node.exe
 set NPM_CMD=%NODE_DIR%\npm.cmd
