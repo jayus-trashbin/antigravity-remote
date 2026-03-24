@@ -8,16 +8,22 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "preact": "^10.20.1",
-    "lucide-preact": "^0.363.0",
-    "qrcode": "^1.5.3",
-    "morphdom": "^2.7.2",
     "clsx": "^2.1.0",
+    "dompurify": "^3.3.3",
+    "highlight.js": "^11.11.1",
+    "lucide-preact": "^0.363.0",
+    "marked": "^17.0.5",
+    "morphdom": "^2.7.2",
+    "preact": "^10.20.1",
+    "qrcode": "^1.5.3",
     "tailwind-merge": "^2.2.2"
   },
   "devDependencies": {
     "@preact/preset-vite": "^2.8.0",
-    "tailwindcss": "^4.0.0-alpha",
+    "@tailwindcss/vite": "^4.2.2",
+    "@types/dompurify": "^3.0.5",
+    "@types/marked": "^5.0.2",
+    "tailwindcss": "^4.2.2",
     "typescript": "^5.4.3",
     "vite": "^5.4.11",
     "vite-plugin-pwa": "^0.20.0"

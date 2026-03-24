@@ -1,9 +1,11 @@
 import { defineConfig } from 'vite';
 import preact from '@preact/preset-vite';
 import { VitePWA } from 'vite-plugin-pwa';
+import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
   plugins: [
+    tailwindcss(),
     preact(),
     VitePWA({
       registerType: 'autoUpdate',
@@ -32,14 +34,13 @@ export default defineConfig({
     host: '0.0.0.0',
     proxy: {
       '/api': {
-        target: 'https://localhost:3333',
-        secure: false,
+        target: 'http://localhost:3333',
         changeOrigin: true,
       },
       '/ws': {
-        target: 'wss://localhost:3333',
-        secure: false,
+        target: 'ws://localhost:3333',
         ws: true,
+        changeOrigin: true,
       },
     },
   },

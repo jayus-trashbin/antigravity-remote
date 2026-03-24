@@ -1,11 +1,14 @@
 import express from 'express';
-import { createServer } from 'https';
+import { createServer as createHttpsServer } from 'https';
+import { createServer as createHttpServer } from 'http';
 import { WebSocketServer } from 'ws';
 import cors from 'cors';
 import { config } from './config.js';
 import { ensureCerts } from './https.js';
 import { connectCDP } from './cdp/core.js';
 import { startChatPolling, registerWSClient } from './services/chat-stream.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 // Rotas
 import { createAuthRouter } from './routes/auth.js';
@@ -13,16 +16,29 @@ import { createChatRouter } from './routes/chat.js';
 import { createFilesRouter } from './routes/files.js';
 import { createGitRouter } from './routes/git.js';
 import { createImproveRouter } from './routes/improve.js';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import { createHistoryRouter } from './routes/history.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
-const { cert, key } = ensureCerts();
-const server = createServer({ cert, key }, app);
+const isDev = process.env.NODE_ENV !== 'production';
+
+let server: any;
+if (isDev) {
+  server = createHttpServer(app);
+  console.log('[server] Rodando em modo HTTP (dev)');
+} else {
+  const certs = ensureCerts();
+  server = createHttpsServer({ cert: certs.cert, key: certs.key }, app);
+  console.log('[server] Rodando em modo HTTPS (prod)');
+}
+
 const wss = new WebSocketServer({ server });
 
-app.use(cors());
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'x-session-token'],
+}));
 app.use(express.json());
 
 // API Routes
@@ -31,6 +47,7 @@ app.use('/api/chat', createChatRouter());
 app.use('/api/files', createFilesRouter());
 app.use('/api/git', createGitRouter());
 app.use('/api/improve', createImproveRouter());
+app.use('/api/history', createHistoryRouter());
 
 // Static Files (Production)
 const clientDist = path.join(__dirname, '../../client/dist');
@@ -54,8 +71,9 @@ async function start() {
   startChatPolling();
 
   server.listen(config.port, '0.0.0.0', () => {
-    console.log(`[server] HTTPS rodando em https://localhost:${config.port}`);
-    console.log(`[server] Rede: https://0.0.0.0:${config.port}`);
+    const protocol = isDev ? 'http' : 'https';
+    console.log(`[server] Porta: ${config.port} (${protocol})`);
+    console.log(`[server] URL: ${protocol}://localhost:${config.port}`);
   });
 }
 

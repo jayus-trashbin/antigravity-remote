@@ -9,13 +9,6 @@ data/
 Thumbs.db
 server/dist/
 client/dist/
-node-v20.11.0-win-x64/
-node-portable.zip
-node.bat
-npm.bat
-setup-node.sh
-NODE_PORTABLE_README.md
-install.bat
-install-dependencies.bat
-node/
-nul
+
+# Antigravity Kit
+.temp_ag_kit/

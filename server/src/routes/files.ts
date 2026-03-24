@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import multer from 'multer';
-import { readdirSync, statSync } from 'fs';
+import { readdirSync, statSync, readFileSync } from 'fs';
 import { join } from 'path';
 import { requireAuth } from '../middleware/auth.js';
 import { UPLOAD_DIR, ensureUploadDir, injectUploadedFile } from '../services/uploads.js';
@@ -38,6 +38,24 @@ export function createFilesRouter(): Router {
         path: req.file.path,
       },
     });
+  });
+
+  router.get('/read', requireAuth, (req, res) => {
+    const subPath = (req.query.path as string) || '';
+    if (!subPath) return res.status(400).json({ error: 'Caminho obrigatório' });
+    
+    const fullPath = join(getWorkspacePath(), subPath);
+    try {
+      const stat = statSync(fullPath);
+      if (stat.size > 200 * 1024) {
+        return res.status(400).json({ error: 'Arquivo muito grande para visualização (>200KB)' });
+      }
+      
+      const content = readFileSync(fullPath, 'utf-8');
+      res.json({ content });
+    } catch (err) {
+      res.status(400).json({ error: (err as Error).message });
+    }
   });
 
   return router;
