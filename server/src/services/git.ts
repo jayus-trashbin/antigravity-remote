@@ -48,3 +48,15 @@ export async function getBranch(): Promise<string> {
   const result = await git().branchLocal();
   return result.current;
 }
+
+export async function unstageFile(filePath: string): Promise<void> {
+  await git().reset(['--', filePath]);
+}
+
+export async function discardFile(filePath: string): Promise<void> {
+  await git().checkout(['--', filePath]);
+}
+
+export async function getCommitLog(limit = 10) {
+  return git().log({ n: limit });
+}

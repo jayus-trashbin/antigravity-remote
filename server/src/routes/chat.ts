@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { requireAuth } from '../middleware/auth.js';
 import { sendPromptToAntigravity, approveAction, rejectAction, setAutoAccept, isAutoAcceptEnabled } from '../cdp/actions.js';
-import { getChatSnapshot } from '../cdp/chat.js';
+import { getChatSnapshot, setActiveModel } from '../cdp/chat.js';
 
 export function createChatRouter(): Router {
   const router = Router();
@@ -20,6 +20,15 @@ export function createChatRouter(): Router {
     const snapshot = await getChatSnapshot();
     if (!snapshot) return res.status(503).json({ error: 'CDP não conectado' });
     res.json(snapshot);
+  });
+
+  // Mudar modelo
+  router.post('/model', requireAuth, async (req, res) => {
+    const { model } = req.body as { model: string };
+    if (!model) return res.status(400).json({ error: 'Modelo não especificado' });
+
+    const success = await setActiveModel(model);
+    res.json({ success });
   });
 
   // Aprovar ação
