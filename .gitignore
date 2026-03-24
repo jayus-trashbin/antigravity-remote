@@ -19,3 +19,4 @@ install.bat
 install-dependencies.bat
 node/
 nul
+.agent
